@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { useCheckerBoardContext } from "../../context/CheckerBoardContext";
 import { CheckerboardProps } from "../../types";
 import {
   Board,
@@ -12,16 +11,18 @@ import {
   Stats,
   Title,
 } from "./styles";
+import { useCheckerboard } from "../../hooks/useCheckerboard";
 
 export const Checkerboard = memo(
-  ({ maxBoardSize, minBoardSize }: CheckerboardProps) => {
+  ({ maxBoardSize, minBoardSize, defaultBoardSize }: CheckerboardProps) => {
     const {
       gameState,
       handleCellClick,
-      maxClickCount,
       resetGame,
+      maxClickCount,
       handleBoardSizeChange,
-    } = useCheckerBoardContext();
+    } = useCheckerboard({ defaultBoardSize, minBoardSize, maxBoardSize });
+
     const { board, totalMoveCount, boardSize } = gameState;
 
     const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,9 +34,7 @@ export const Checkerboard = memo(
       <Container>
         <Title>Checkerboard</Title>
 
-        <Button onClick={resetGame} className="warning">
-          Reset Game
-        </Button>
+        <Button onClick={resetGame}>Reset Game</Button>
 
         <BoardSizeControlContainer>
           <BoardSizeControlContainerLabel>
@@ -77,5 +76,3 @@ export const Checkerboard = memo(
     );
   }
 );
-
-Checkerboard.displayName = "Checkerboard";
